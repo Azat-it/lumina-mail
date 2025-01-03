@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google"
-
+import { SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar"
 import "@workspace/ui/globals.css"
-import { Providers } from "@/components/providers"
+import { AppSidebar } from "@/components/app-sidebar"
+import { Button } from "@workspace/ui/components/button"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -21,9 +22,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
       >
-        <Providers>{children}</Providers>
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="p-4 w-full space-y-4">
+            <Button variant="outline" size="icon" asChild>
+              <SidebarTrigger />
+            </Button>
+            {children}
+          </main>
+        </SidebarProvider>
       </body>
     </html>
   )

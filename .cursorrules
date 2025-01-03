@@ -1,0 +1,74 @@
+main rules:
+  - if you are not sure about something, ask me before you do it
+  - dont use comments in the code unless you are sure that it is needed
+  - keep the code clean and readable. Avoid over-engineering and keep it simple.
+
+tech stack:
+- turborepo
+- next.js
+- shadcn/ui
+- tailwind css
+- react email
+- amazon ses
+- stripe
+- sqlite
+- betterauth for authentication
+- drizzle for orm
+- tiptap for rich text editor
+
+Project Plan for Lumina-Mail
+1. Tech Stack Overview
+Frontend & Framework:
+Next.js (all three apps in the monorepo: docs, app, website).
+UI Framework: Shadcn components with Tailwind CSS for styling.
+Rich Text Editor: Tiptap for email content customization.
+Database: SQLite (simple and quick to set up; easily upgraded if needed).
+Email Templates: React Email library for reusable, styled email components.
+Email Sending: Amazon SES (primary), with flexibility to switch to other services like SendGrid or Postmark.
+Payments: Stripe for credit purchase integration.
+Deployment:
+Option 1: Vercel (for simplicity, auto-deployment, and SSL).
+Option 2: Custom VPS (with Docker Compose for managing services).
+2. Features Breakdown
+Here’s how the features will align with your timeline and dissertation requirements:
+
+Core Features (MVP)
+Campaign Management
+
+Create and send campaigns.
+Rich Text Editor: Add/edit text, change colors, alignments, and insert default blocks (button, text, footer with unsubscribe link).
+Select from pre-defined templates.
+Contact Management
+
+Import contacts via Excel file upload.
+Export contacts to Excel.
+Team Management
+
+Role-based access control: Creator vs Members.
+Creator can add/remove members; members can only view/send campaigns.
+Credit Management
+
+Stripe integration to buy credits.
+Deduct credits per email sent.
+Email Sending
+
+Use React Email for templating.
+Send via Amazon SES (or fallback to another service).
+Stretch Features (Optional if time permits)
+Email Events Tracking (Clicks, opens, bounces).
+Use Amazon SES event notifications or an analytics library for this.
+Custom Domain for Sending Emails
+Allow users to configure their own domain for better deliverability.
+3. Monorepo Structure
+A well-organized monorepo will streamline development. Structure it as:
+
+bash
+Copy code
+/lumina-mail
+  /apps
+    /app         # Main app for campaign/contact/team management.
+    /docs        # Documentation (use Docusaurus or Next.js).
+    /website     # Marketing website.
+  /packages
+    /ui          # Shared Shadcn components.
+    /email       # Email templates (React Email).
