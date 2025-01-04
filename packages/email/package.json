@@ -1,0 +1,33 @@
+{
+  "name": "@workspace/email",
+  "version": "1.0.0",
+  "description": "Email templates for Lumina Mail",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "email dev --port 3001",
+    "export": "email export",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.2",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "react-email": "^3.0.4",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.31",
+    "@react-email/markdown": "^0.0.14",
+    "@react-email/render": "^1.0.3",
+    "@react-email/tailwind": "^1.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
