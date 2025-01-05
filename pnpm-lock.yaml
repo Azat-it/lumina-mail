@@ -113,6 +113,9 @@ importers:
       react-email:
         specifier: ^3.0.4
         version: 3.0.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      sonner:
+        specifier: ^1.7.1
+        version: 1.7.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@types/better-sqlite3':
         specifier: ^7.6.12
