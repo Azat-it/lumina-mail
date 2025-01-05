@@ -4,9 +4,21 @@ import { Button } from '@workspace/ui/components/button'
 import { Plus } from 'lucide-react'
 import { CampaignList } from './campaign-list'
 import { CampaignStats } from './campaign-stats'
+import { headers } from 'next/headers'
+import { auth } from '@/lib/auth'
 
 export default async function CampaignsPage() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+  if (!session?.user?.id) {
+    return { success: false, error: "Not authenticated" };
+  }
+
   const campaigns = await prisma.campaign.findMany({
+    where: {
+      userId: session.user.id
+    },
     orderBy: {
       createdAt: 'desc',
     },
@@ -21,7 +33,7 @@ export default async function CampaignsPage() {
 
   const stats = {
     total: campaigns.length,
-    draft: campaigns.filter(c => c.status === 'draft').length,
+    draft: campaigns.filter(c => c.status === 'ready').length,
     scheduled: campaigns.filter(c => c.status === 'scheduled').length,
     sent: campaigns.filter(c => c.status === 'sent').length,
   }
@@ -35,9 +47,9 @@ export default async function CampaignsPage() {
             Create and manage your email campaigns
           </p>
         </div>
-        <Link href="/campaigns/new" className="shrink-0">
+        <Link href="/campaigns/new" className="shrink-0 group">
           <Button>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="h-4 w-4 group-hover:rotate-180 transition duration-150" />
             New Campaign
           </Button>
         </Link>
