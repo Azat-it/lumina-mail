@@ -1,4 +1,7 @@
-export interface CampaignData {
+export type ViewMode = "write" | "preview" | "split";
+
+export type CampaignData = {
+  id?: number;
   subject: string;
   content: string;
   title: string;
@@ -6,7 +9,5 @@ export interface CampaignData {
   ctaText?: string;
   ctaUrl?: string;
   status: "draft" | "ready";
-  lastUpdated?: number;
-}
-
-export type ViewMode = "write" | "preview" | "split"; 
+  lastUpdated: number;
+}; 

@@ -4,6 +4,7 @@ import "@workspace/ui/globals.css"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Button } from "@workspace/ui/components/button"
 import { Providers } from "@/components/providers"
+import { Toaster } from "@workspace/ui/components/sonner"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
             </Button>
             {children}
           </main>
+          <Toaster />
         </Providers>
       </body>
     </html>

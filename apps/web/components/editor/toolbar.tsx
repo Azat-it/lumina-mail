@@ -50,7 +50,7 @@ export function Toolbar({ editor }: ToolbarProps) {
   if (!editor) return null;
 
   return (
-    <div className="border rounded-t p-1 flex flex-wrap gap-1">
+    <div className="border border-b-0 rounded-t p-1 flex flex-wrap gap-1">
       <Popover>
         <PopoverTrigger asChild>
           <Toggle size="sm">

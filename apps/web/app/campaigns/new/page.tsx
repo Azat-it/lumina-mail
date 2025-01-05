@@ -8,8 +8,11 @@ import { CampaignData, ViewMode } from '@/types/campaign';
 import { CampaignHeader } from '@/components/campaigns/header';
 import { CampaignForm } from '@/components/campaigns/form';
 import { EditorSection } from '@/components/campaigns/editor-section';
+import { saveCampaign } from "@/app/actions/campaigns";
+import { toast } from "sonner"
 
 const initialCampaign: CampaignData = {
+  id: undefined,
   subject: "",
   content: "",
   title: "",
@@ -24,6 +27,7 @@ export default function NewCampaignPage() {
   const [campaign, setCampaign] = useSessionStorage<CampaignData>("draft-campaign", initialCampaign);
   const [view, setView] = useSessionStorage<ViewMode>("campaign-view", "split");
   const [lastSavedText, setLastSavedText] = useState("Not saved yet");
+  const [isSaving, setIsSaving] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
@@ -61,11 +65,35 @@ export default function NewCampaignPage() {
   }, [setCampaign]);
 
   const handleSave = async (isDraft = true) => {
-    const updatedCampaign = {
-      ...campaign,
-      status: isDraft ? "draft" : "ready",
-    };
-    console.log("Saving campaign:", updatedCampaign);
+    try {
+      setIsSaving(true);
+      const result = await saveCampaign({
+        id: campaign.id,
+        subject: campaign.subject,
+        content: campaign.content,
+        title: campaign.title,
+        previewText: campaign.previewText,
+        ctaText: campaign.ctaText,
+        ctaUrl: campaign.ctaUrl,
+        status: isDraft ? "draft" : "ready",
+      });
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      setCampaign(prev => ({
+        ...prev,
+        id: result.data?.id,
+        lastUpdated: result.data?.updatedAt?.getTime() ?? Date.now(),
+      }));
+
+      toast.success(isDraft ? "Draft saved" : "Campaign ready to send");
+    } catch (error) {
+      console.error("Failed to save campaign:", error);
+      toast.error("Failed to save campaign");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -95,13 +123,15 @@ export default function NewCampaignPage() {
             <Button
               variant="outline"
               onClick={() => handleSave(true)}
+              disabled={isSaving}
             >
-              Save as Draft
+              {isSaving ? "Saving..." : "Save as Draft"}
             </Button>
             <Button
               onClick={() => handleSave(false)}
+              disabled={isSaving}
             >
-              Send Campaign
+              {isSaving ? "Saving..." : "Send Campaign"}
             </Button>
           </div>
         </div>
