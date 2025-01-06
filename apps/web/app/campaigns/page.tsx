@@ -39,7 +39,7 @@ export default async function CampaignsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="container max-w-[1400px] mx-auto flex flex-col gap-8 w-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Campaigns</h1>

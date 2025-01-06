@@ -16,7 +16,7 @@ import {
 } from "@workspace/ui/components/alert-dialog";
 
 interface ViewMode {
-  icon: any;
+  icon: React.ElementType;
   label: string;
   value: "write" | "preview" | "split";
 }
@@ -28,6 +28,7 @@ const viewModes: ViewMode[] = [
 ];
 
 interface HeaderProps {
+  mode: "create" | "edit";
   lastSavedText: string;
   view: "write" | "preview" | "split";
   setView: (view: "write" | "preview" | "split") => void;
@@ -35,17 +36,17 @@ interface HeaderProps {
   isMobile: boolean;
 }
 
-const ViewModeTab = ({ icon: Icon, label, mobile }: { icon: any; label: string; mobile?: boolean }) => (
+const ViewModeTab = ({ icon: Icon, label, mobile }: { icon: React.ElementType; label: string; mobile?: boolean }) => (
   mobile ? <Icon className="h-4 w-4" /> : <><Icon className="h-4 w-4 mr-2" />{label}</>
 );
 
-export function CampaignHeader({ lastSavedText, view, setView, onClear, isMobile }: HeaderProps) {
+export function CampaignHeader({ mode = "create", lastSavedText, view, setView, onClear, isMobile }: HeaderProps) {
   return (
     <div className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-[1400px] py-4 mx-auto">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold">Create New Campaign</h1>
+            <h1 className="text-2xl font-bold">{mode === "create" ? "Create New Campaign" : "Edit Campaign"}</h1>
             <p className="text-sm text-muted-foreground">{lastSavedText}</p>
           </div>
           <div className="flex items-center gap-2">

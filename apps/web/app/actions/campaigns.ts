@@ -79,4 +79,28 @@ export async function getCampaign(id: number) {
     console.error("Failed to get campaign:", error);
     return { success: false, error: "Failed to get campaign" };
   }
+}
+
+export async function deleteCampaign(id: number) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+    if (!session?.user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    await prisma.campaign.delete({
+      where: {
+        id,
+        userId: session.user.id
+      },
+    });
+
+    revalidatePath("/campaigns");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete campaign:", error);
+    return { success: false, error: "Failed to delete campaign" };
+  }
 } 

@@ -1,32 +1,40 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@workspace/ui/components/button";
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { useSessionStorage } from '@/hooks/use-session-storage';
 import { CampaignData, ViewMode } from '@/types/campaign';
 import { CampaignHeader } from '@/components/campaigns/header';
 import { CampaignForm } from '@/components/campaigns/form';
 import { EditorSection } from '@/components/campaigns/editor-section';
 import { saveCampaign } from "@/app/actions/campaigns";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Campaign } from "@prisma/client";
 
-const initialCampaign: CampaignData = {
-  id: undefined,
-  subject: "",
-  content: "",
-  title: "",
-  previewText: "",
-  ctaText: "",
-  ctaUrl: "",
-  status: "draft",
-  lastUpdated: Date.now()
-};
+interface EditCampaignPageProps {
+  campaign: Campaign;
+}
 
-export default function NewCampaignPage() {
-  const [campaign, setCampaign] = useSessionStorage<CampaignData>("draft-campaign", initialCampaign);
-  const [view, setView] = useSessionStorage<ViewMode>("campaign-view", "split");
-  const [lastSavedText, setLastSavedText] = useState("Not saved yet");
+function convertToClientCampaign(campaign: Campaign): CampaignData {
+  return {
+    id: campaign.id,
+    subject: campaign.subject,
+    content: campaign.content,
+    title: campaign.title,
+    previewText: campaign.previewText,
+    ctaText: campaign.ctaText || undefined,
+    ctaUrl: campaign.ctaUrl || undefined,
+    status: campaign.status as "draft" | "ready",
+    lastUpdated: campaign.updatedAt.getTime(),
+  };
+}
+
+export function EditCampaignPage({ campaign: initialCampaign }: EditCampaignPageProps) {
+  const router = useRouter();
+  const [campaign, setCampaign] = useState<CampaignData>(convertToClientCampaign(initialCampaign));
+  const [view, setView] = useState<ViewMode>("split");
+  const [lastSavedText, setLastSavedText] = useState(`Last saved ${new Date(campaign.lastUpdated).toLocaleTimeString()}`);
   const [isSaving, setIsSaving] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -36,15 +44,8 @@ export default function NewCampaignPage() {
     }
   }, [isMobile, view, setView]);
 
-  useEffect(() => {
-    if (campaign.lastUpdated) {
-      setLastSavedText(`Last saved ${new Date(campaign.lastUpdated).toLocaleTimeString()}`);
-    }
-  }, [campaign.lastUpdated]);
-
   const updateCampaign = useCallback((field: keyof CampaignData, value: string) => {
     setCampaign(prev => {
-      // Don't update if value hasn't changed
       if (prev[field] === value) return prev;
 
       const updates: Partial<CampaignData> = {
@@ -52,7 +53,6 @@ export default function NewCampaignPage() {
         lastUpdated: Date.now(),
       };
 
-      // Handle subject line updates
       if (field === 'subject') {
         updates.previewText = value;
         if (!prev.title) {
@@ -60,9 +60,11 @@ export default function NewCampaignPage() {
         }
       }
 
-      return { ...prev, ...updates };
+      const newCampaign = { ...prev, ...updates };
+      setLastSavedText(`Last saved ${new Date(newCampaign.lastUpdated).toLocaleTimeString()}`);
+      return newCampaign;
     });
-  }, [setCampaign]);
+  }, []);
 
   const handleSave = async (isDraft = true) => {
     try {
@@ -81,13 +83,11 @@ export default function NewCampaignPage() {
       if (!result.success) {
         throw new Error(result.error);
       }
-      setCampaign(prev => ({
-        ...prev,
-        id: result.data?.id,
-        lastUpdated: result.data?.updatedAt?.getTime() ?? Date.now(),
-      }));
 
       toast.success(isDraft ? "Draft saved" : "Campaign ready to send");
+      if (!isDraft) {
+        router.push("/campaigns");
+      }
     } catch (error) {
       console.error("Failed to save campaign:", error);
       toast.error("Failed to save campaign");
@@ -99,11 +99,11 @@ export default function NewCampaignPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <CampaignHeader
-        mode="create"
+        mode="edit"
         lastSavedText={lastSavedText}
         view={view}
         setView={setView}
-        onClear={() => setCampaign(initialCampaign)}
+        onClear={() => setCampaign(convertToClientCampaign(initialCampaign))}
         isMobile={isMobile}
       />
 
