@@ -22,6 +22,6 @@ export default async function authMiddleware(request: NextRequest) {
 }
 
 export const config = {
-  // all routes are protected except any route that starts with /auth
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth).*)"],
+  // all routes are protected except any route that starts with /auth and /subscriptions
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth|subscriptions).*)"],
 };
