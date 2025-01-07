@@ -40,7 +40,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-email": "^3.0.4",
-    "sonner": "^1.7.1"
+    "sonner": "^1.7.1",
+    "stripe": "^17.5.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
