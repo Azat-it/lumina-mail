@@ -52,7 +52,7 @@ export const BaseTemplate = ({
                 This email was sent by <Link href="https://lumina-mail.com">Lumina Mail</Link>.
               </Text>
               <Text className="text-sm text-gray-500 text-center m-0">
-                Copyright © 2024 Lumina Mail. All rights reserved.
+                Copyright © {new Date().getFullYear()} Lumina Mail. All rights reserved.
               </Text>
               {!!unsubscribeLink && (
                 <Text className="text-sm text-gray-500 text-center m-0">

@@ -13,7 +13,7 @@ export type SaveCampaignInput = {
   previewText: string;
   ctaText?: string;
   ctaUrl?: string;
-  status: "draft" | "ready";
+  status: "draft" | "scheduled" | "sent" | "sending";
 };
 
 export async function saveCampaign(data: SaveCampaignInput) {

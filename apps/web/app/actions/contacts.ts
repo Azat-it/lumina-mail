@@ -83,4 +83,69 @@ export async function deleteContact(id: string) {
     console.error("Failed to delete contact:", error);
     return { success: false, error: "Failed to delete contact" };
   }
+}
+
+export async function toggleContactSubscription(id: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+    if (!session?.user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const contact = await prisma.contact.findUnique({
+      where: {
+        id,
+        userId: session.user.id,
+      },
+    });
+
+    if (!contact) {
+      return { success: false, error: "Contact not found" };
+    }
+
+    const updatedContact = await prisma.contact.update({
+      where: {
+        id,
+        userId: session.user.id,
+      },
+      data: {
+        status: contact.status === 'subscribed' ? 'unsubscribed' : 'subscribed',
+      },
+    });
+
+    revalidatePath("/contacts");
+    return { success: true, data: updatedContact };
+  } catch (error) {
+    console.error("Failed to toggle contact subscription:", error);
+    return { success: false, error: "Failed to toggle subscription" };
+  }
+}
+
+export async function bulkToggleSubscription(ids: string[], status: "subscribed" | "unsubscribed") {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+    if (!session?.user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    await prisma.contact.updateMany({
+      where: {
+        id: { in: ids },
+        userId: session.user.id,
+      },
+      data: {
+        status,
+      },
+    });
+
+    revalidatePath("/contacts");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to bulk update contacts:", error);
+    return { success: false, error: "Failed to update contacts" };
+  }
 } 

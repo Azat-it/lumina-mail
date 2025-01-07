@@ -66,7 +66,7 @@ export function CampaignList({ campaigns }: CampaignListProps) {
   const handleSend = async (campaign: CampaignWithCount) => {
     try {
       await sendEmails({
-        campaignId: campaign.id.toString(),
+        campaignId: campaign.id,
         subject: campaign.subject,
         content: campaign.content,
         from: 'Lumina Mail <onboarding@resend.dev>',
