@@ -8,6 +8,6 @@ export type CampaignData = {
   previewText: string;
   ctaText?: string;
   ctaUrl?: string;
-  status: "draft" | "ready";
+  status: "draft" | "scheduled" | "sending" | "sent";
   lastUpdated: number;
 }; 

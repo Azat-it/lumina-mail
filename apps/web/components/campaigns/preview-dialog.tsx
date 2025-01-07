@@ -15,9 +15,11 @@ interface PreviewDialogProps {
   content: string;
   subject: string;
   previewText: string;
+  ctaText?: string;
+  ctaUrl?: string;
 }
 
-export function PreviewDialog({ content, subject, previewText }: PreviewDialogProps) {
+export function PreviewDialog({ content, subject, previewText, ctaText, ctaUrl }: PreviewDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -40,7 +42,7 @@ export function PreviewDialog({ content, subject, previewText }: PreviewDialogPr
             <div className="text-sm text-muted-foreground">{previewText}</div>
           </div>
           <div className="border rounded-lg">
-            <Preview content={content} />
+            <Preview content={content} ctaText={ctaText} ctaUrl={ctaUrl} />
           </div>
         </div>
       </DialogContent>

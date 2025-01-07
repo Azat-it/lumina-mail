@@ -15,6 +15,9 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  stripeCustomerId String?  @unique @map("stripe_customer_id")
+  credits       Credits?
+  creditTransactions CreditTransaction[]
   accounts      Account[]
   campaigns     Campaign[]
   contacts      Contact[]
@@ -76,6 +79,7 @@ model Campaign {
   ctaText     String?             @map("cta_text")
   ctaUrl      String?             @map("cta_url")
   status      String              @default("draft")
+  metadata    String?
   createdAt   DateTime            @default(now()) @map("created_at")
   updatedAt   DateTime            @updatedAt @map("updated_at")
   userId      String
@@ -114,4 +118,29 @@ model CampaignRecipient {
 
   @@unique([campaignId, contactId])
   @@map("campaign_recipient")
+}
+
+model Credits {
+  id        String   @id @default(cuid())
+  balance   Int      @default(0)
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("credits")
+}
+
+model CreditTransaction {
+  id        String   @id @default(cuid())
+  amount    Int
+  type      String   // "purchase" | "usage"
+  status    String   // "pending" | "completed" | "failed"
+  metadata  String?  // Additional data like Stripe payment intent ID
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("credit_transactions")
 }

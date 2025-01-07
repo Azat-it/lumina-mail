@@ -29,6 +29,10 @@ const data = {
           url: "/",
         },
         {
+          title: "Credits",
+          url: "/credits",
+        },
+        {
           title: "Campaigns",
           url: "/campaigns",
         },

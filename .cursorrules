@@ -13,7 +13,7 @@ tech stack:
 - stripe
 - sqlite
 - betterauth for authentication
-- drizzle for orm
+- prisma for orm
 - tiptap for rich text editor
 
 Project Plan for Lumina-Mail
