@@ -6,12 +6,21 @@ import { CreditPurchase } from "./credit-purchase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { CreditHistory } from "./credit-history";
 
-export default async function CreditsPage() {
+export default async function CreditsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await auth.api.getSession({
     headers: await headers()
   });
   if (!session?.user?.id) {
     return null;
+  }
+
+  const { canceled } = await searchParams
+
+  if (canceled === "true") {
+    await prisma.creditTransaction.updateMany({
+      where: { userId: session.user.id, status: "pending" },
+      data: { status: "canceled" },
+    });
   }
 
   const credits = await prisma.credits.findUnique({
