@@ -5,13 +5,29 @@ import { Card, CardContent } from "@workspace/ui/components/card"
 import { Label } from "@workspace/ui/components/label"
 import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group"
 import { Laptop, Moon, Sun } from 'lucide-react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 export function ThemeSelector() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
+  const handleThemeChange = (value: string) => {
+    setTheme(value)
+  }
+
   return (
     <RadioGroup
       defaultValue={theme ?? 'system'}
-      onValueChange={(value) => setTheme(value)}
+      onValueChange={handleThemeChange}
       className="grid grid-cols-3 gap-4"
     >
       <Label

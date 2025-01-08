@@ -29,21 +29,17 @@ export default async function SettingsPage() {
         </TabsList>
         <TabsContent value="appearance" className="space-y-4">
           <div>
-            <h3 className="text-lg font-medium">Appearance</h3>
-            <p className="text-sm text-muted-foreground">
-              Customize how Lumina Mail looks on your device.
-            </p>
-          </div>
-          <Separator />
-          <div className="space-y-4 max-w-[400px]">
             <h3 className="text-lg font-medium">Theme</h3>
             <p className="text-sm text-muted-foreground">
               Select the theme for your dashboard.
             </p>
+          </div>
+          <Separator />
+          <div className="space-y-4 max-w-[400px]">
             <ThemeSelector />
           </div>
         </TabsContent>
       </Tabs>
-    </div >
+    </div>
   );
 } 
