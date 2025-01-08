@@ -16,37 +16,57 @@ import {
 } from "@workspace/ui/components/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Logo } from '@workspace/ui/components/logo';
+import { BookOpen, CreditCard, Globe, LayoutDashboard, Mail, Settings, Users } from "lucide-react"
 
 
 const data = {
   navMain: [
     {
-      title: "Getting Started",
-      url: "#",
+      title: "App",
       items: [
         {
           title: "Dashboard",
           url: "/",
+          icon: LayoutDashboard,
         },
         {
           title: "Credits",
           url: "/credits",
+          icon: CreditCard,
         },
         {
           title: "Campaigns",
           url: "/campaigns",
+          icon: Mail,
         },
         {
           title: "Contacts",
           url: "/contacts",
+          icon: Users,
         },
         {
           title: "Settings",
           url: "/settings",
+          icon: Settings,
         },
-
       ],
-    }
+    },
+    {
+      title: "Information",
+      items: [
+        {
+          title: "Documentation",
+          url: "https://docs.lumina.so",
+          icon: BookOpen,
+        },
+        {
+          title: "Website",
+          url: "https://lumina.so",
+          icon: Globe,
+        }
+      ],
+    },
   ],
 }
 
@@ -60,11 +80,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarMenuButton asChild>
-          <Link href="/">
-            Logo
-          </Link>
-        </SidebarMenuButton>
+        <Link href="/" className="flex items-center m-4">
+          <Logo />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
@@ -75,7 +93,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                      <Link href={item.url}>{item.title}</Link>
+                      <Link href={item.url}>
+                        <div className="flex items-center gap-2">
+                          <item.icon size={16} />
+                          {item.title}
+                        </div>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
