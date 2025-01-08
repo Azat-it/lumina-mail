@@ -102,6 +102,9 @@ async function sendEmailsInBackground(data: SendEmailInput, userId: string, tota
               subject: data.subject,
               html: emailHtml,
               text: data.content.replace(/<[^>]*>/g, ''),
+              tags: [
+                { name: "campaign_id", value: data.campaignId.toString() }
+              ],
             });
 
             sentCount++;

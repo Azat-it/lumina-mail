@@ -15,6 +15,7 @@ export function SubscribeForm({ userId }: SubscribeFormProps) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +36,7 @@ export function SubscribeForm({ userId }: SubscribeFormProps) {
       toast.success("Successfully subscribed!");
       setEmail("");
       setName("");
+      setIsSubscribed(true);
     } catch (error) {
       console.error("Failed to subscribe:", error);
       toast.error("Failed to subscribe. Please try again.");
@@ -42,6 +44,10 @@ export function SubscribeForm({ userId }: SubscribeFormProps) {
       setIsLoading(false);
     }
   };
+
+  if (isSubscribed) {
+    return <div>You are subscribed!</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

@@ -84,6 +84,7 @@ model Campaign {
   updatedAt   DateTime            @updatedAt @map("updated_at")
   userId      String
   recipients  CampaignRecipient[]
+  events      EmailEvent[]
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("campaigns")
@@ -143,4 +144,18 @@ model CreditTransaction {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("credit_transactions")
+}
+
+model EmailEvent {
+  id         String   @id @default(cuid())
+  type       String   // "open" | "click" | "bounce" | "delivery" | "complaint"
+  email      String
+  metadata   String?  // Additional data like user agent, IP, etc.
+  createdAt  DateTime @default(now())
+  campaignId Int
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId, type])
+  @@index([email])
+  @@map("email_events")
 }
