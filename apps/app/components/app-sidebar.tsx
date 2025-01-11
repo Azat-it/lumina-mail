@@ -57,12 +57,12 @@ const data = {
       items: [
         {
           title: "Documentation",
-          url: "https://docs.lumina.so",
+          url: `${process.env.NEXT_PUBLIC_DOCS_URL}`,
           icon: BookOpen,
         },
         {
           title: "Website",
-          url: "https://lumina.so",
+          url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
           icon: Globe,
         }
       ],
