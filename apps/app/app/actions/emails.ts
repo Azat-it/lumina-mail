@@ -82,7 +82,7 @@ async function sendEmailsInBackground(data: SendEmailInput, userId: string, tota
     for (let i = 0; i < batches; i++) {
       const batch = contacts.slice(i * batchSize, (i + 1) * batchSize);
 
-      const results = await Promise.all(
+      await Promise.all(
         batch.map(async contact => {
           try {
             const emailHtml = await renderEmail({
@@ -96,7 +96,7 @@ async function sendEmailsInBackground(data: SendEmailInput, userId: string, tota
               userId,
             });
 
-            const result = await resend.emails.send({
+            await resend.emails.send({
               from: data.from,
               to: contact.email,
               subject: data.subject,

@@ -5,11 +5,12 @@ import Resubscribe from "./resubscribe";
 export default async function UnsubscribePage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
-  const email = searchParams.email;
-  const token = searchParams.token;
-  const userId = searchParams.userId;
+  const awaitedSearchParams = await searchParams;
+  const email = awaitedSearchParams.email;
+  const token = awaitedSearchParams.token;
+  const userId = awaitedSearchParams.userId;
 
   if (!email || !token || !userId) {
     return (
