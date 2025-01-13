@@ -19,7 +19,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button asChild>
-              <Link href={process.env.NEXT_PUBLIC_APP_URL + "/auth/sign-in"}>
+              <Link href={process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}>
                 Sign in
               </Link>
             </Button>
