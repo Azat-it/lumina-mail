@@ -1,6 +1,7 @@
 import { FadeFromBottom } from "@/motions/fade";
 import Image from "next/image";
 import Meteors from "@workspace/ui/components/meteors";
+import { Fade } from '../../motions/fade';
 export default function Hero() {
   return (
     <div>
@@ -26,7 +27,7 @@ export default function Hero() {
           </FadeFromBottom>
         </div>
       </div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br dark:from-foreground/10 from-foreground/50 to-background/10 to-40% pointer-events-none" />
+      <Fade delay={0.6} duration={0.4} className="absolute inset-0 -z-10 bg-gradient-to-br dark:from-foreground/10 from-foreground/50 to-background to-40% pointer-events-none" />
     </div>
   );
 }
