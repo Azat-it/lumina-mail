@@ -98,10 +98,15 @@ export function EditCampaignPage({ campaign: initialCampaign }: EditCampaignPage
   };
 
   const handleSend = async () => {
+    if (!campaign.id) {
+      toast.error("Campaign not found");
+      return;
+    }
+
     setIsSaving(true);
     try {
       await sendEmails({
-        campaignId: campaign.id?.toString() || '',
+        campaignId: campaign.id,
         subject: campaign.subject,
         content: campaign.content,
         from: 'Lumina Mail <onboarding@resend.dev>',

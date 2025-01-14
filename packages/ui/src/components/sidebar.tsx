@@ -11,13 +11,13 @@ import { Input } from "@workspace/ui/components/input"
 import { Separator } from "@workspace/ui/components/separator"
 import { Sheet, SheetContent } from "@workspace/ui/components/sheet"
 import { Skeleton } from "@workspace/ui/components/skeleton"
+import { useIsMobile } from '@workspace/ui/hooks/use-mobile';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@workspace/ui/components/tooltip"
-import { useIsMobile } from "../hooks/use-mobile.js"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,20 +9,20 @@ datasource db {
 }
 
 model User {
-  id            String     @id
-  name          String
-  email         String     @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  stripeCustomerId String?  @unique @map("stripe_customer_id")
-  credits       Credits?
+  id                 String              @id
+  name               String
+  email              String              @unique
+  emailVerified      Boolean
+  image              String?
+  createdAt          DateTime
+  updatedAt          DateTime
+  stripeCustomerId   String?             @unique @map("stripe_customer_id")
+  credits            Credits?
   creditTransactions CreditTransaction[]
-  accounts      Account[]
-  campaigns     Campaign[]
-  contacts      Contact[]
-  sessions      Session[]
+  accounts           Account[]
+  campaigns          Campaign[]
+  contacts           Contact[]
+  sessions           Session[]
 
   @@map("user")
 }
@@ -135,9 +136,9 @@ model Credits {
 model CreditTransaction {
   id        String   @id @default(cuid())
   amount    Int
-  type      String   // "purchase" | "usage"
-  status    String   // "pending" | "completed" | "failed"
-  metadata  String?  // Additional data like Stripe payment intent ID
+  type      String // "purchase" | "usage"
+  status    String // "pending" | "completed" | "failed"
+  metadata  String? // Additional data like Stripe payment intent ID
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -148,9 +149,9 @@ model CreditTransaction {
 
 model EmailEvent {
   id         String   @id @default(cuid())
-  type       String   // "open" | "click" | "bounce" | "delivery" | "complaint"
+  type       String // "open" | "click" | "bounce" | "delivery" | "complaint"
   email      String
-  metadata   String?  // Additional data like user agent, IP, etc.
+  metadata   String? // Additional data like user agent, IP, etc.
   createdAt  DateTime @default(now())
   campaignId Int
   campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)

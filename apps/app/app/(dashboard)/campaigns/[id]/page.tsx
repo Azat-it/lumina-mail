@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { EditCampaignPage } from "./page.client";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function CampaignEditPage({ params }: PageProps) {
@@ -16,7 +16,7 @@ export default async function CampaignEditPage({ params }: PageProps) {
     return null;
   }
 
-  const { id } = params;
+  const { id } = await params;
   const campaign = await prisma.campaign.findUnique({
     where: {
       id: parseInt(id),

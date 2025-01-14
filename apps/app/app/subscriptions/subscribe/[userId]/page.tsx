@@ -3,14 +3,14 @@ import { SubscribeForm } from "./subscribe-form";
 import { Card, CardDescription, CardTitle, CardHeader, CardContent } from "@workspace/ui/components/card";
 
 interface SubscribePageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function SubscribePage({ params }: SubscribePageProps) {
   const user = await prisma.user.findUnique({
-    where: { id: params.userId },
+    where: { id: (await params).userId },
     select: { name: true, id: true },
   });
 
