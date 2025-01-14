@@ -19,7 +19,7 @@ import { FadeFromTop } from "@/motions/fade";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
+  { name: "Docs", href: process.env.NEXT_PUBLIC_DOCS_URL || "http://localhost:3002" },
   { name: "Contact", href: "/contact" },
 ];
 
