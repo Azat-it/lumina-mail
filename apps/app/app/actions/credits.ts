@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { stripe, CREDIT_PRODUCTS } from "@/lib/stripe";
+import { CREDIT_PRODUCTS, getStripe } from "@/lib/stripe";
 import { revalidatePath } from "next/cache";
 
 export async function createCheckoutSession(productKey: keyof typeof CREDIT_PRODUCTS) {
@@ -31,7 +31,7 @@ export async function createCheckoutSession(productKey: keyof typeof CREDIT_PROD
 
     let stripeCustomerId = user.stripeCustomerId;
     if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
+      const customer = await getStripe().customers.create({
         email: user.email,
         name: user.name,
         metadata: {
@@ -52,7 +52,7 @@ export async function createCheckoutSession(productKey: keyof typeof CREDIT_PROD
     });
 
     // Create Stripe checkout session
-    const checkoutSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await getStripe().checkout.sessions.create({
       customer: stripeCustomerId,
       mode: "payment",
       allow_promotion_codes: true,
