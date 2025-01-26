@@ -1,9 +1,16 @@
 import { headers } from "next/headers";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/db";
 import Stripe from "stripe";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error("Webhook error: Missing webhook secret");
+    return new Response("Webhook secret not configured", { status: 500 });
+  }
+
   const body = await req.text();
   const headersList = await headers();
   const signature = headersList.get("stripe-signature");
@@ -13,13 +20,14 @@ export async function POST(req: Request) {
     hasWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
   });
 
-  if (!signature || !process.env.STRIPE_WEBHOOK_SECRET) {
-    console.error("Webhook error: Missing signature or webhook secret");
+  if (!signature) {
+    console.error("Webhook error: Missing signature");
     return new Response("Webhook signature missing", { status: 400 });
   }
 
   try {
-    const event = stripe.webhooks.constructEvent(
+    const stripeClient = getStripe();
+    const event = stripeClient.webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET

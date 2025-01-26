@@ -2,18 +2,21 @@
 import Stripe from 'stripe';
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not set');
+  console.warn("STRIPE_SECRET_KEY is not set. Stripe functionality will be limited.");
 }
 
-const secretKey = process.env.STRIPE_SECRET_KEY;
-if (!secretKey.startsWith('sk_')) {
-  throw new Error('Invalid secret key format. Must start with sk_');
-}
+export const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-12-18.acacia',
+  })
+  : null;
 
-export const stripe = new Stripe(secretKey, {
-  apiVersion: '2024-12-18.acacia',
-  typescript: true,
-});
+export const getStripe = () => {
+  if (!stripe) {
+    throw new Error("Stripe is not properly configured. Please check your environment variables.");
+  }
+  return stripe;
+}
 
 export const CREDIT_PRODUCTS = {
   STARTER: {
