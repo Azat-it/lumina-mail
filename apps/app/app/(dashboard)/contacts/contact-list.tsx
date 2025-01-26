@@ -33,7 +33,7 @@ import {
   AlertDialogTitle,
 } from "@workspace/ui/components/alert-dialog";
 import { useState } from 'react';
-import { deleteContact, toggleContactSubscription, bulkToggleSubscription } from '../../actions/contacts';
+import { bulkToggleSubscription, deleteContact, toggleContactSubscription } from '@/app/actions/contacts';
 
 interface ContactListProps {
   contacts: Contact[]

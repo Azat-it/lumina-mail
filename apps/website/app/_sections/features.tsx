@@ -1,7 +1,8 @@
+import * as React from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { cn } from "@workspace/ui/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
-import { Fade } from '../../motions/fade';
+import { Fade } from '@/motions/fade';
 
 const features = [
   {

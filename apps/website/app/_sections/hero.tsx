@@ -1,7 +1,8 @@
 import { FadeFromBottom } from "@/motions/fade";
 import Image from "next/image";
 import Meteors from "@workspace/ui/components/meteors";
-import { Fade } from '../../motions/fade';
+import { Fade } from "@/motions/fade";
+
 export default function Hero() {
   return (
     <div>

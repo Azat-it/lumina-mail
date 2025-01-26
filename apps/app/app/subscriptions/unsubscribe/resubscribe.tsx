@@ -1,7 +1,7 @@
 "use client";
 
+import { resubscribe } from "@/app/actions/subscriptions";
 import { Button } from "@workspace/ui/components/button";
-import { resubscribe } from "../../actions/subscriptions";
 import { useState } from "react";
 
 export default function Resubscribe({ email, userId }: { email: string; userId: string }) {

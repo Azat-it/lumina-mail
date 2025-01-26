@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card";
-import { Fade } from "../../motions/fade";
+import { Fade } from "@/motions/fade";
 
 const pricingOptions = [
   {
