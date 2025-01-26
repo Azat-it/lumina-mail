@@ -3,6 +3,11 @@ import { prisma } from "@/lib/db";
 import { verifyWebhookSignature } from "@/lib/resend";
 
 export async function POST(req: Request) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[Resend Webhook] Missing RESEND_API_KEY");
+    return new Response("Resend API key not configured", { status: 500 });
+  }
+
   const body = await req.text();
   const headersList = await headers();
   const signature = headersList.get("resend-signature");
