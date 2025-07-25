@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm run vercel-build",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "functions": {
+    "apps/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
