@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "next build"
+    "vercel-build": "pnpm run build"
   },
   "dependencies": {
     "@better-fetch/fetch": "^1.1.12",
